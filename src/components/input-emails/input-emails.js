@@ -117,10 +117,14 @@ export class InputEmails {
 
   _onInputPaste(event) {
     event.preventDefault();
-    const emails = event.clipboardData
-      .getData('text')
-      .split(',')
-      .map((email) => email.trim());
+    let pastedText = '';
+    if (typeof event.clipboardData === 'undefined') {
+      pastedText = window.clipboardData.getData('Text');
+    } else {
+      pastedText = event.clipboardData.getData('text/plain');
+    }
+
+    const emails = pastedText.split(',').map((email) => email.trim());
 
     emails.forEach((email) => {
       this.addEmail(email);
